@@ -79,7 +79,6 @@ public class HandEquityTest {
 
 	@Test
 	public void test4TwoCardsLeft() throws Exception {
-		/*
 		mCalculator.setBoardFromString("2d,Kd,8c")
 					.addHand(Hand.fromString("AsKc"))
 					.addHand(Hand.fromString("AdAh"))
@@ -87,7 +86,6 @@ public class HandEquityTest {
 
 		assertEquals(mCalculator.getHandEquity(0).getEquity(), 9);
 		assertEquals(mCalculator.getHandEquity(1).getEquity(), 91);
-		*/
 	}
 
 

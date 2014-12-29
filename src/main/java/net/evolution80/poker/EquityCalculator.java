@@ -109,14 +109,55 @@ public class EquityCalculator {
 
 		int boardCount = mBoardCards.size();
 		int handsCount = mHands.size();
+		int remainingCount = remainingCards.size();
 		if(boardCount == 0) {
-			// ~200 millions possibilites
+			// ~200 millions possibilities
 		}
 		else if(boardCount == 3) {
-			// ~2250 possibilites
-			
+			// ~2250 possibilities
+			for(int i = 0; i < handsCount; i++) {
+				Hand h = mHands.get(i);
+				HandRanking hr = HandRanking.evaluate(h.getCard(0), h.getCard(1), mBoardCards.get(0), mBoardCards.get(1), mBoardCards.get(2));
+				mRankings.add(hr);
+
+
+				HandEquity he = new HandEquity();
+				mEquities.add(he);
+			}
+
+
 			mBoardCards.add(null);
 			mBoardCards.add(null);
+
+			for(int i = 0; i < remainingCount; i++) {
+				Card c1 = remainingCards.get(i);
+
+				for(int j = i + 1; j < remainingCount; j++) {
+					Card c2 = remainingCards.get(j);
+
+					mBoardCards.set(3, c1);
+					mBoardCards.set(4, c2);
+
+					HandRanking highestRanking = null;
+					int highestRankingIndex = -1;
+
+					for(int k = 0; k < handsCount; k++) {
+						Hand h = mHands.get(k);
+						HandRanking hr = HandRanking.evaluate(h.getCard(0), h.getCard(1), mBoardCards.get(0), mBoardCards.get(1), mBoardCards.get(2), mBoardCards.get(3), mBoardCards.get(4));
+
+						if(highestRanking == null || hr.compareTo(highestRanking) >= 0) {
+							highestRankingIndex = k;
+							highestRanking = hr;
+						}
+
+						mRankings.add(hr);
+					}
+
+					for(int k = 0; k < handsCount; k++) {
+						mEquities.get(k).addPossibleHand(k == highestRankingIndex);
+					}
+				}
+			}
 
 			mBoardCards.remove(4);
 			mBoardCards.remove(3);
