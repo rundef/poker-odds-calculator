@@ -15,7 +15,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'net.evolution80.poker.Console'
+        attributes 'Main-Class': 'com.rundef.poker.Console'
     }
 }
 
