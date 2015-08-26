@@ -48,13 +48,9 @@ public class EquityCalculator {
 	public EquityCalculator setBoardFromString(String str) throws Exception {
 		mBoardCards.clear();
 
-		for(int i = 0; i < str.length(); i++) {
-			char c = str.charAt(i);
-
-			if (!Character.toString(c).matches("[\\s,]")) {
-				mBoardCards.add(Card.fromString(str.substring(i, i + 2)));
-				i += 2;
-			}
+		str = str.replaceAll("\\s","").replaceAll(",","");
+		for(int i = 0; i+1 < str.length(); i += 2) {
+			mBoardCards.add(Card.fromString(str.substring(i, i + 2)));
 		}
 
 		return this;

@@ -1,13 +1,66 @@
 package com.rundef.poker;
 
+import java.util.ArrayList;
 
 public class Console
 {
 	public static void main(String[] args) throws Exception
 	{
-		Console.board5();
-		Console.board5_2();
-		Console.board5_3();
+		boolean isBoard = false;
+		String board = "";
+		ArrayList<String> handsStr = new ArrayList<>();
+		ArrayList<Hand> hands = new ArrayList<>();
+
+		for (String s: args) {
+			if(s.equals("-b")) {
+				isBoard = true;
+				continue;
+			}
+
+
+			if(isBoard) {
+				board = s;
+				isBoard = false;
+			}
+			else {
+				handsStr.add(s);
+			}
+        }
+
+        if(board.isEmpty()) {
+        	throw new Exception("Preflop odds calculator: NOT IMPLEMENTED YET.");
+        }
+
+        if(handsStr.size() < 2) {
+        	throw new Exception("You must enter at least 2 hands");
+        }
+
+
+
+
+
+        EquityCalculator calculator = new EquityCalculator();
+        calculator.setBoardFromString(board);
+        
+        for(int i = 0; i < handsStr.size(); i++) {
+        	Hand h = Hand.fromString(handsStr.get(i));
+        	hands.add(h);
+        	calculator.addHand(h);
+        }
+
+        calculator.calculate();
+
+        for(int i = 0; i < hands.size(); i++) {
+        	HandRanking hr = calculator.getHandRanking(i);
+        	HandEquity he = calculator.getHandEquity(i);
+
+        	System.out.println(String.format("Player %d: %s - %s --- %s", 1+i, hands.get(i), hr, he));
+        }
+
+
+		//Console.board5();
+		//Console.board5_2();
+		//Console.board5_3();
 	}
 
 
