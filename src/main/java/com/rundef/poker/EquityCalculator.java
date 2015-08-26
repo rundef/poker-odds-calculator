@@ -34,8 +34,8 @@ public class EquityCalculator {
 
 
 	public EquityCalculator setBoard(Card... cards) throws Exception {
-		if(cards.length > 5)
-			throw new Exception("Board cannot have more than 5 cards");
+		if(cards.length != 3 && cards.length != 4 && cards.length != 5)
+			throw new Exception("Board must contain 3, 4 or 5 cards");
 
 
 		mBoardCards.clear();
@@ -52,6 +52,9 @@ public class EquityCalculator {
 		for(int i = 0; i+1 < str.length(); i += 2) {
 			mBoardCards.add(Card.fromString(str.substring(i, i + 2)));
 		}
+
+		if(mBoardCards.size() != 3 && mBoardCards.size() != 4 && mBoardCards.size() != 5)
+			throw new Exception("Board must contain 3, 4 or 5 cards");
 
 		return this;
 	}
