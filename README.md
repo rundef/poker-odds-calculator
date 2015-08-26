@@ -10,6 +10,7 @@ gradle build
 ## Usage
 
 * Preflop odds: **NOT IMPLEMENTED YET**
+
 *example: we want to know the odds of 3 preflop all-in players holding the following hands: J♥J♤ vs T♢T♤ vs A♧K♧*
 ```
 java -jar build/libs/poker-equity-calculator.jar JhJs TdTs AcKc
