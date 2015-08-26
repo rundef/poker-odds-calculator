@@ -60,6 +60,23 @@ public class EquityCalculator {
 	}
 
 
+	public void printBoard() {
+		if(mBoardCards.isEmpty()) {
+			System.out.println("Board : no cards");
+		}
+		else {
+			String boardStr = "";
+			for(Card c : mBoardCards) {
+				if(!boardStr.isEmpty()) {
+					boardStr += " - ";
+				}
+				boardStr += String.format("%s", c);
+			}
+			System.out.println(String.format("Board: %s", boardStr));
+		}
+	}
+
+
 	public HandRanking getHandRanking(int handIndex) {
 		return mRankings.get(handIndex);
 	}

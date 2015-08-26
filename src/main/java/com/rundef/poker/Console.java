@@ -50,6 +50,11 @@ public class Console
 
         calculator.calculate();
 
+
+        calculator.printBoard();
+        System.out.println("");
+
+        
         for(int i = 0; i < hands.size(); i++) {
         	HandRanking hr = calculator.getHandRanking(i);
         	HandEquity he = calculator.getHandEquity(i);
