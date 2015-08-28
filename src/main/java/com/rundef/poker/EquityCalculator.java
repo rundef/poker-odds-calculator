@@ -1,6 +1,8 @@
 package com.rundef.poker;
 
 import java.util.ArrayList;
+import java.lang.System;
+import java.util.Random;
 
 
 public class EquityCalculator {
@@ -9,10 +11,14 @@ public class EquityCalculator {
 
 	private ArrayList<HandRanking> mRankings;
 	private ArrayList<HandEquity> mEquities;
+	private long mSeed;
+	private long mMaxIterations;
 
 
 	public EquityCalculator() {
 		this.reset();
+
+		mMaxIterations = 200000;
 	}
 
 
@@ -23,7 +29,21 @@ public class EquityCalculator {
 		mRankings = new ArrayList<HandRanking>();
 		mEquities = new ArrayList<HandEquity>();
 
+		mSeed 	= System.currentTimeMillis();
+
 		return this;
+	}
+
+	public void setSeed(long seed) {
+		mSeed = seed;
+	}
+
+	public void setMaxIterations(long iterations) {
+		mMaxIterations = iterations;
+	}
+
+	public long getMaxIterations() {
+		return mMaxIterations;
 	}
 
 
@@ -60,8 +80,13 @@ public class EquityCalculator {
 	}
 
 
+	public boolean boardIsEmpty() {
+		return mBoardCards.isEmpty();
+	}
+
+
 	public void printBoard() {
-		if(mBoardCards.isEmpty()) {
+		if(boardIsEmpty()) {
 			System.out.println("Board : no cards");
 		}
 		else {
@@ -131,6 +156,10 @@ public class EquityCalculator {
 			for(int i = 0; i < handsCount; i++) {
 				HandEquity he = new HandEquity();
 				mEquities.add(he);
+
+				Hand h = mHands.get(i);
+				HandRanking hr = HandRanking.evaluate(h.getCard(0), h.getCard(1));
+				mRankings.add(hr);
 			}
 
 
@@ -140,62 +169,64 @@ public class EquityCalculator {
 			mBoardCards.add(null);
 			mBoardCards.add(null);
 
-			for(int i = 0; i < remainingCount; i++) {
-				Card c1 = remainingCards.get(i);
 
-				for(int j = i + 1; j < remainingCount; j++) {
-					Card c2 = remainingCards.get(j);
+			Random generator = new Random(mSeed);
+			for(long iterations = mMaxIterations; iterations > 0; iterations--) {
+				int card1Index = generator.nextInt(remainingCount);
+				int card2Index, card3Index, card4Index, card5Index;
 
-					for(int k = j + 1; k < remainingCount; k++) {
-						Card c3 = remainingCards.get(k);
+				do {
+					card2Index = generator.nextInt(remainingCount);
+				} while(card2Index == card1Index);
 
-						for(int l = k + 1; l < remainingCount; l++) {
-							Card c4 = remainingCards.get(l);
+				do {
+					card3Index = generator.nextInt(remainingCount);
+				} while(card3Index == card2Index || card3Index == card1Index);
 
-							for(int m = k + 1; m < remainingCount; m++) {
-								Card c5 = remainingCards.get(m);
+				do {
+					card4Index = generator.nextInt(remainingCount);
+				} while(card4Index == card3Index || card4Index == card2Index || card4Index == card1Index);
 
-								mBoardCards.set(0, c1);
-								mBoardCards.set(1, c2);
-								mBoardCards.set(2, c3);
-								mBoardCards.set(3, c4);
-								mBoardCards.set(4, c5);
+				do {
+					card5Index = generator.nextInt(remainingCount);
+				} while(card5Index == card4Index || card5Index == card3Index || card5Index == card2Index || card5Index == card1Index);
+				
 
-								HandRanking highestRanking = null;
-								int highestRankingIndex = -1;
+				mBoardCards.set(0, remainingCards.get(card1Index));
+				mBoardCards.set(1, remainingCards.get(card2Index));
+				mBoardCards.set(2, remainingCards.get(card3Index));
+				mBoardCards.set(3, remainingCards.get(card4Index));
+				mBoardCards.set(4, remainingCards.get(card5Index));
 
-								for(int z = 0; z < handsCount; z++) {
-									Hand h = mHands.get(z);
-									HandRanking hr = HandRanking.evaluate(h.getCard(0), h.getCard(1), mBoardCards.get(0), mBoardCards.get(1), mBoardCards.get(2), mBoardCards.get(3), mBoardCards.get(4));
+				HandRanking highestRanking = null;
+				int highestRankingIndex = -1;
 
-									if(highestRanking == null || hr.compareTo(highestRanking) >= 0) {
-										highestRankingIndex = z;
-										highestRanking = hr;
-									}
+				for(int z = 0; z < handsCount; z++) {
+					Hand h = mHands.get(z);
+					HandRanking hr = HandRanking.evaluate(h.getCard(0), h.getCard(1), mBoardCards.get(0), mBoardCards.get(1), mBoardCards.get(2), mBoardCards.get(3), mBoardCards.get(4));
 
-									mRankings.add(hr);
-								}
-
-								for(int z = 0; z < handsCount; z++) {
-									mEquities.get(z).addPossibleHand(z == highestRankingIndex);
-								}
-							}
-						}
+					if(highestRanking == null || hr.compareTo(highestRanking) >= 0) {
+						highestRankingIndex = z;
+						highestRanking = hr;
 					}
+				}
+
+				for(int z = 0; z < handsCount; z++) {
+					mEquities.get(z).addPossibleHand(z == highestRankingIndex);
 				}
 			}
 
-			mBoardCards.remove(4);
-			mBoardCards.remove(3);
-			mBoardCards.remove(2);
-			mBoardCards.remove(1);
-			mBoardCards.remove(0);
+			mBoardCards.clear();
 		}
 		else if(boardCount == 3) {
 			// ~2250 possibilities
 			for(int i = 0; i < handsCount; i++) {
 				HandEquity he = new HandEquity();
 				mEquities.add(he);
+
+				Hand h = mHands.get(i);
+				HandRanking hr = HandRanking.evaluate(h.getCard(0), h.getCard(1), mBoardCards.get(0), mBoardCards.get(1), mBoardCards.get(2));
+				mRankings.add(hr);
 			}
 
 
@@ -222,8 +253,6 @@ public class EquityCalculator {
 							highestRankingIndex = k;
 							highestRanking = hr;
 						}
-
-						mRankings.add(hr);
 					}
 
 					for(int k = 0; k < handsCount; k++) {
@@ -241,6 +270,10 @@ public class EquityCalculator {
 			for(int i = 0; i < handsCount; i++) {
 				HandEquity he = new HandEquity();
 				mEquities.add(he);
+
+				Hand h = mHands.get(i);
+				HandRanking hr = HandRanking.evaluate(h.getCard(0), h.getCard(1), mBoardCards.get(0));
+				mRankings.add(hr);
 			}
 
 
@@ -259,8 +292,6 @@ public class EquityCalculator {
 						highestRankingIndex = i;
 						highestRanking = hr;
 					}
-
-					mRankings.add(hr);
 				}
 
 				for(int i = 0; i < handsCount; i++) {
