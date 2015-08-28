@@ -14,7 +14,7 @@ gradle build
 *example: we want to know the odds of 3 pre-flop all-in players holding the following hands: J♥J♤ vs T♢T♤ vs A♧K♧*
 ```
 java -jar build/libs/poker-equity-calculator.jar JhJs TdTs AcKc
-
+```
 
 *Board : no cards*
 
@@ -23,7 +23,7 @@ java -jar build/libs/poker-equity-calculator.jar JhJs TdTs AcKc
 *Player 3: Ac Kc - High card (A,K) --- ~41 %*
 
 *Simulated 200000 random boards in 3.1 second*
-```
+
 
 
 * Post-flop odds
