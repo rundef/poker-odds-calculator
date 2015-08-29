@@ -272,7 +272,7 @@ public class EquityCalculator {
 				mEquities.add(he);
 
 				Hand h = mHands.get(i);
-				HandRanking hr = HandRanking.evaluate(h.getCard(0), h.getCard(1), mBoardCards.get(0));
+				HandRanking hr = HandRanking.evaluate(h.getCard(0), h.getCard(1), mBoardCards.get(0), mBoardCards.get(1), mBoardCards.get(2), mBoardCards.get(3));
 				mRankings.add(hr);
 			}
 
