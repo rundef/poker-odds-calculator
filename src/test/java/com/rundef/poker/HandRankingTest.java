@@ -19,7 +19,51 @@ public class HandRankingTest {
 					.addHand(Hand.fromString("5d6d"))
 					.calculate();
 
-		assertEquals(mCalculator.getHandRanking(0).getRank(), HandRanking.Ranking.STRAIGHT_FLUSH);
+		HandRanking hr1 = mCalculator.getHandRanking(0);
+
+		assertEquals(HandRanking.Ranking.STRAIGHT_FLUSH, hr1.getRank());
+		assertEquals(5, hr1.getHighCardsRanks().size());
+		assertEquals(CardRank.SEVEN,   hr1.getHighCardRank(0).value());
+		assertEquals(CardRank.SIX,     hr1.getHighCardRank(1).value());
+		assertEquals(CardRank.FIVE,    hr1.getHighCardRank(2).value());
+		assertEquals(CardRank.FOUR,    hr1.getHighCardRank(3).value());
+		assertEquals(CardRank.THREE,   hr1.getHighCardRank(4).value());
+
+
+
+
+
+		mCalculator.reset();
+		mCalculator.setBoardFromString("3d4dTcAs5d")
+					.addHand(Hand.fromString("6d2d"))
+					.calculate();
+
+		hr1 = mCalculator.getHandRanking(0);
+
+		assertEquals(HandRanking.Ranking.STRAIGHT_FLUSH, hr1.getRank());
+		assertEquals(5, hr1.getHighCardsRanks().size());
+		assertEquals(CardRank.SIX,   hr1.getHighCardRank(0).value());
+		assertEquals(CardRank.FIVE,  hr1.getHighCardRank(1).value());
+		assertEquals(CardRank.FOUR,  hr1.getHighCardRank(2).value());
+		assertEquals(CardRank.THREE, hr1.getHighCardRank(3).value());
+		assertEquals(CardRank.TWO,   hr1.getHighCardRank(4).value());
+
+
+
+
+		mCalculator.reset();
+		mCalculator.setBoardFromString("3d,4d,7s,4s,2d")
+					.addHand(Hand.fromString("Ad5d"))
+					.calculate();
+
+		hr1 = mCalculator.getHandRanking(0);
+
+		assertEquals(HandRanking.Ranking.STRAIGHT_FLUSH, hr1.getRank());
+		assertEquals(CardRank.FIVE,  hr1.getHighCardRank(0).value());
+		assertEquals(CardRank.FOUR,  hr1.getHighCardRank(1).value());
+		assertEquals(CardRank.THREE, hr1.getHighCardRank(2).value());
+		assertEquals(CardRank.TWO,   hr1.getHighCardRank(3).value());
+		assertEquals(CardRank.ACE,   hr1.getHighCardRank(4).value());
 	}
 
 
@@ -32,10 +76,10 @@ public class HandRankingTest {
 
 		HandRanking hr1 = mCalculator.getHandRanking(0);
 
-		assertEquals(hr1.getRank(), HandRanking.Ranking.QUADS);
-		assertEquals(hr1.getHighCardsRanks().size(), 2);
-		assertEquals(hr1.getHighCardRank(0).value(), CardRank.FOUR);
-		assertEquals(hr1.getHighCardRank(1).value(), CardRank.TEN);
+		assertEquals(HandRanking.Ranking.QUADS, hr1.getRank());
+		assertEquals(2, hr1.getHighCardsRanks().size());
+		assertEquals(CardRank.FOUR, hr1.getHighCardRank(0).value());
+		assertEquals(CardRank.TEN, hr1.getHighCardRank(1).value());
 	}
 
 
@@ -48,7 +92,7 @@ public class HandRankingTest {
 
 		HandRanking hr1 = mCalculator.getHandRanking(0);
 
-		assertEquals(hr1.getRank(), HandRanking.Ranking.FULL_HOUSE);
+		assertEquals(HandRanking.Ranking.FULL_HOUSE, hr1.getRank());
 	}
 
 
@@ -60,13 +104,13 @@ public class HandRankingTest {
 
 		HandRanking hr1 = mCalculator.getHandRanking(0);
 
-		assertEquals(hr1.getRank(), HandRanking.Ranking.FLUSH);
-		assertEquals(hr1.getHighCardsRanks().size(), 5);
-		assertEquals(hr1.getHighCardRank(0).value(), CardRank.QUEEN);
-		assertEquals(hr1.getHighCardRank(1).value(), CardRank.JACK);
-		assertEquals(hr1.getHighCardRank(2).value(), CardRank.NINE);
-		assertEquals(hr1.getHighCardRank(3).value(), CardRank.SEVEN);
-		assertEquals(hr1.getHighCardRank(4).value(), CardRank.TWO);
+		assertEquals(HandRanking.Ranking.FLUSH, hr1.getRank());
+		assertEquals(5, hr1.getHighCardsRanks().size());
+		assertEquals(CardRank.QUEEN, hr1.getHighCardRank(0).value());
+		assertEquals(CardRank.JACK, hr1.getHighCardRank(1).value());
+		assertEquals(CardRank.NINE, hr1.getHighCardRank(2).value());
+		assertEquals(CardRank.SEVEN, hr1.getHighCardRank(3).value());
+		assertEquals(CardRank.TWO, hr1.getHighCardRank(4).value());
 	}
 
 
@@ -79,13 +123,46 @@ public class HandRankingTest {
 
 		HandRanking hr1 = mCalculator.getHandRanking(0);
 
-		assertEquals(hr1.getRank(), HandRanking.Ranking.STRAIGHT);
-		assertEquals(hr1.getHighCardsRanks().size(), 5);
-		assertEquals(hr1.getHighCardRank(0).value(), CardRank.TEN);
-		assertEquals(hr1.getHighCardRank(1).value(), CardRank.NINE);
-		assertEquals(hr1.getHighCardRank(2).value(), CardRank.EIGHT);
-		assertEquals(hr1.getHighCardRank(3).value(), CardRank.SEVEN);
-		assertEquals(hr1.getHighCardRank(4).value(), CardRank.SIX);
+		assertEquals(HandRanking.Ranking.STRAIGHT, hr1.getRank());
+		assertEquals(5, hr1.getHighCardsRanks().size());
+		assertEquals(CardRank.TEN, hr1.getHighCardRank(0).value());
+		assertEquals(CardRank.NINE, hr1.getHighCardRank(1).value());
+		assertEquals(CardRank.EIGHT, hr1.getHighCardRank(2).value());
+		assertEquals(CardRank.SEVEN, hr1.getHighCardRank(3).value());
+		assertEquals(CardRank.SIX, hr1.getHighCardRank(4).value());
+
+
+
+		mCalculator.reset();
+		mCalculator.setBoardFromString("3d4sTcAs5s")
+					.addHand(Hand.fromString("6s2d"))
+					.calculate();
+
+		hr1 = mCalculator.getHandRanking(0);
+
+		assertEquals(HandRanking.Ranking.STRAIGHT, hr1.getRank());
+		assertEquals(5, hr1.getHighCardsRanks().size());
+		assertEquals(CardRank.SIX,   hr1.getHighCardRank(0).value());
+		assertEquals(CardRank.FIVE,  hr1.getHighCardRank(1).value());
+		assertEquals(CardRank.FOUR,  hr1.getHighCardRank(2).value());
+		assertEquals(CardRank.THREE, hr1.getHighCardRank(3).value());
+		assertEquals(CardRank.TWO,   hr1.getHighCardRank(4).value());
+
+
+		mCalculator.reset();
+		mCalculator.setBoardFromString("3d4s9s7s5s")
+					.addHand(Hand.fromString("Ad2d"))
+					.calculate();
+
+		hr1 = mCalculator.getHandRanking(0);
+
+		assertEquals(HandRanking.Ranking.STRAIGHT, hr1.getRank());
+		assertEquals(5, hr1.getHighCardsRanks().size());
+		assertEquals(CardRank.FIVE,  hr1.getHighCardRank(0).value());
+		assertEquals(CardRank.FOUR,  hr1.getHighCardRank(1).value());
+		assertEquals(CardRank.THREE, hr1.getHighCardRank(2).value());
+		assertEquals(CardRank.TWO,   hr1.getHighCardRank(3).value());
+		assertEquals(CardRank.ACE,   hr1.getHighCardRank(4).value());
 	}
 
 
@@ -98,11 +175,11 @@ public class HandRankingTest {
 
 		HandRanking hr1 = mCalculator.getHandRanking(0);
 
-		assertEquals(hr1.getRank(), HandRanking.Ranking.TRIPS);
-		assertEquals(hr1.getHighCardsRanks().size(), 3);
-		assertEquals(hr1.getHighCardRank(0).value(), CardRank.TEN);
-		assertEquals(hr1.getHighCardRank(1).value(), CardRank.JACK);
-		assertEquals(hr1.getHighCardRank(2).value(), CardRank.NINE);
+		assertEquals(HandRanking.Ranking.TRIPS, hr1.getRank());
+		assertEquals(3, hr1.getHighCardsRanks().size());
+		assertEquals(CardRank.TEN, hr1.getHighCardRank(0).value());
+		assertEquals(CardRank.JACK, hr1.getHighCardRank(1).value());
+		assertEquals(CardRank.NINE, hr1.getHighCardRank(2).value());
 	}
 
 
@@ -115,11 +192,11 @@ public class HandRankingTest {
 
 		HandRanking hr1 = mCalculator.getHandRanking(0);
 
-		assertEquals(hr1.getRank(), HandRanking.Ranking.TWO_PAIRS);
-		assertEquals(hr1.getHighCardsRanks().size(), 3);
-		assertEquals(hr1.getHighCardRank(0).value(), CardRank.JACK);
-		assertEquals(hr1.getHighCardRank(1).value(), CardRank.TEN);
-		assertEquals(hr1.getHighCardRank(2).value(), CardRank.NINE);
+		assertEquals(HandRanking.Ranking.TWO_PAIRS, hr1.getRank());
+		assertEquals(3, hr1.getHighCardsRanks().size());
+		assertEquals(CardRank.JACK, hr1.getHighCardRank(0).value());
+		assertEquals(CardRank.TEN,  hr1.getHighCardRank(1).value());
+		assertEquals(CardRank.NINE, hr1.getHighCardRank(2).value());
 	}
 
 
@@ -134,19 +211,19 @@ public class HandRankingTest {
 		HandRanking hr1 = mCalculator.getHandRanking(0);
 		HandRanking hr2 = mCalculator.getHandRanking(1);
 
-		assertEquals(hr1.getRank(), HandRanking.Ranking.PAIR);
-		assertEquals(hr1.getHighCardsRanks().size(), 4);
-		assertEquals(hr1.getHighCardRank(0).value(), CardRank.TEN);
-		assertEquals(hr1.getHighCardRank(1).value(), CardRank.JACK);
-		assertEquals(hr1.getHighCardRank(2).value(), CardRank.NINE);
-		assertEquals(hr1.getHighCardRank(3).value(), CardRank.SEVEN);
+		assertEquals(HandRanking.Ranking.PAIR, hr1.getRank());
+		assertEquals(4, hr1.getHighCardsRanks().size());
+		assertEquals(CardRank.TEN, hr1.getHighCardRank(0).value());
+		assertEquals(CardRank.JACK, hr1.getHighCardRank(1).value());
+		assertEquals(CardRank.NINE, hr1.getHighCardRank(2).value());
+		assertEquals(CardRank.SEVEN, hr1.getHighCardRank(3).value());
 
-		assertEquals(hr2.getRank(), HandRanking.Ranking.PAIR);
-		assertEquals(hr2.getHighCardsRanks().size(), 4);
-		assertEquals(hr2.getHighCardRank(0).value(), CardRank.JACK);
-		assertEquals(hr2.getHighCardRank(1).value(), CardRank.TEN);
-		assertEquals(hr2.getHighCardRank(2).value(), CardRank.NINE);
-		assertEquals(hr2.getHighCardRank(3).value(), CardRank.SEVEN);
+		assertEquals(HandRanking.Ranking.PAIR, hr2.getRank());
+		assertEquals(4, hr2.getHighCardsRanks().size());
+		assertEquals(CardRank.JACK, hr2.getHighCardRank(0).value());
+		assertEquals(CardRank.TEN, hr2.getHighCardRank(1).value());
+		assertEquals(CardRank.NINE, hr2.getHighCardRank(2).value());
+		assertEquals(CardRank.SEVEN, hr2.getHighCardRank(3).value());
 	}
 
 
@@ -159,12 +236,12 @@ public class HandRankingTest {
 
 		HandRanking hr1 = mCalculator.getHandRanking(0);
 
-		assertEquals(hr1.getRank(), HandRanking.Ranking.HIGH_CARD);
-		assertEquals(hr1.getHighCardsRanks().size(), 5);
-		assertEquals(hr1.getHighCardRank(0).value(), CardRank.KING);
-		assertEquals(hr1.getHighCardRank(1).value(), CardRank.QUEEN);
-		assertEquals(hr1.getHighCardRank(2).value(), CardRank.JACK);
-		assertEquals(hr1.getHighCardRank(3).value(), CardRank.NINE);
-		assertEquals(hr1.getHighCardRank(4).value(), CardRank.SIX);
+		assertEquals(HandRanking.Ranking.HIGH_CARD, hr1.getRank());
+		assertEquals(5, hr1.getHighCardsRanks().size());
+		assertEquals(CardRank.KING,  hr1.getHighCardRank(0).value());
+		assertEquals(CardRank.QUEEN, hr1.getHighCardRank(1).value());
+		assertEquals(CardRank.JACK,  hr1.getHighCardRank(2).value());
+		assertEquals(CardRank.NINE,  hr1.getHighCardRank(3).value());
+		assertEquals(CardRank.SIX,   hr1.getHighCardRank(4).value());
 	}
 } 

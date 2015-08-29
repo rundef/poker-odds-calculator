@@ -2,6 +2,7 @@ package com.rundef.poker;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.runners.MethodSorters;
 import org.junit.FixMethodOrder;
@@ -95,8 +96,8 @@ public class HandEquityTest {
 					.addHand(Hand.fromString("5c5h"))
 					.calculate();
 
-		assertEquals(66, mCalculator.getHandEquity(0).getEquity());
-		assertEquals(34, mCalculator.getHandEquity(1).getEquity());
+		assertEquals(67, mCalculator.getHandEquity(0).getEquity());
+		assertEquals(33, mCalculator.getHandEquity(1).getEquity());
 	}
 
 
@@ -107,14 +108,19 @@ public class HandEquityTest {
 
 	@Test
 	public void test6NoBoard() throws Exception {
-		/*
 		mCalculator.reset()
-					.addHand(Hand.fromString("AcAh"))  // 4 queens / 44 cards left
+					.addHand(Hand.fromString("AcAh"))
 					.addHand(Hand.fromString("7c7h"))
 					.calculate();
 
-		assertEquals(81, mCalculator.getHandEquity(0).getEquity());
-		assertEquals(19, mCalculator.getHandEquity(1).getEquity());
-		*/
+		// aces are roughly a 80-20 favorite
+		int equity0 = mCalculator.getHandEquity(0).getEquity();
+		int equity1 = mCalculator.getHandEquity(1).getEquity();
+
+		assertTrue("Error, aces have >= 75% equity", equity0 >= 75);
+		assertTrue("Error, aces have <= 85% equity", equity0 <= 85);
+
+		assertTrue("Error, 7s have >= 15% equity", equity1 >= 15);
+		assertTrue("Error, 7s have <= 25% equity", equity1 <= 25);
 	}
 } 

@@ -103,6 +103,20 @@ public class HandRanking implements Comparable<HandRanking> {
 
 				for(int i = 1; i < flushCards.size(); i++) {
 					int cmp = r.compareTo(flushCards.get(i).getRank());
+					if(straightCount == 3) {
+						Card lowestCard = flushCards.get(i);
+						Card highestCard = flushCards.get(0);
+
+						if(highestCard.getRank().ordinal() == CardRank.ACE && lowestCard.getRank().ordinal() == CardRank.TWO) {
+							ranking = new HandRanking(Ranking.STRAIGHT_FLUSH);
+							for(CardRank cr : straightCards) {
+								ranking.addHighCard(cr);
+							}
+							ranking.addHighCard(lowestCard.getRank());
+							ranking.addHighCard(highestCard.getRank());
+							return ranking;
+						}
+					}
 					if(cmp != 1) {
 						straightCards = new ArrayList<CardRank>();
 						straightCount = 0;
@@ -217,7 +231,7 @@ public class HandRanking implements Comparable<HandRanking> {
 
 
 			// Look for straight
-			for(int i = 0; i < cardsCount - 5; i++) {
+			for(int i = 0; i < cardsCount - 3; i++) {
 				CardRank r = cards.get(i).getRank();
 				int straightCount = 0;
 
@@ -225,12 +239,14 @@ public class HandRanking implements Comparable<HandRanking> {
 				straightCards.add(r);
 
 				for(int j = i + 1; j < cards.size(); j++) {
-					int cmp = r.compareTo(cards.get(j).getRank());
+					CardRank r2 = cards.get(j).getRank();
+					int cmp = r.compareTo(r2);
 
 					if(cmp == 0)
 						continue;
 					else if(cmp != 1)
 						break;
+					
 
 					r = cards.get(j).getRank();
 					straightCards.add(r);
@@ -242,6 +258,19 @@ public class HandRanking implements Comparable<HandRanking> {
 						for(CardRank cr : straightCards) {
 							ranking.addHighCard(cr);
 						}
+						return ranking;
+					}
+				}
+
+				if(straightCount == 3 && i+1 == cardsCount - 3) {
+					Card lowestCard = cards.get(i+3);
+					Card highestCard = cards.get(0);
+					if(highestCard.getRank().ordinal() == CardRank.ACE && lowestCard.getRank().ordinal() == CardRank.TWO) {
+						ranking = new HandRanking(Ranking.STRAIGHT);
+						for(CardRank cr : straightCards) {
+							ranking.addHighCard(cr);
+						}
+						ranking.addHighCard(highestCard.getRank());
 						return ranking;
 					}
 				}
