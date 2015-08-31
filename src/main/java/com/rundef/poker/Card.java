@@ -93,6 +93,6 @@ public class Card implements Comparable<Card>  {
 		if (!(other instanceof Card)) return false;
 
 		Card otherCard = (Card)other;
-		return (otherCard.getSuit() == this.getSuit() && otherCard.getRank().equals(this.getRank()));
+		return (otherCard.getSuit().ordinal() == this.getSuit().ordinal() && otherCard.getRank().equals(this.getRank()));
 	}
 }

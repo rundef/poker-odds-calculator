@@ -378,7 +378,6 @@ public class HandRanking implements Comparable<HandRanking> {
 
 		// Highcard
 		ranking = new HandRanking(Ranking.HIGH_CARD);
-		System.out.println(String.format("cardsCount=%d - size=%d", cardsCount, cards.size()));
 		for(int i = 0; i < cardsCount && i < 5; i++) {
 			ranking.addHighCard(cards.get(i).getRank());
 		}

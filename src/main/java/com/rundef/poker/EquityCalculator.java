@@ -53,6 +53,33 @@ public class EquityCalculator {
 	}
 
 
+	public void verifyDuplicateCards() throws Exception {
+		for(int i = 0; i < mHands.size(); i++) {
+			Card c1 = mHands.get(i).getCard(0);
+			Card c2 = mHands.get(i).getCard(1);
+
+			if(c1.equals(c2)) {
+				throw new Exception("Duplicate cards found");
+			}
+
+			for(int j = i + 1; j < mHands.size(); j++) {
+				Card c3 = mHands.get(j).getCard(0);
+				Card c4 = mHands.get(j).getCard(1);
+
+				if(c1.equals(c3) || c1.equals(c4) || c2.equals(c3) || c2.equals(c4)) {
+					throw new Exception("Duplicate cards found");
+				}
+			}
+
+			for(Card c3 : mBoardCards) {
+				if(c1.equals(c3) || c2.equals(c3)) {
+					throw new Exception("Duplicate cards found");
+				}
+			}
+		}
+	}
+
+
 	public EquityCalculator setBoard(Card... cards) throws Exception {
 		if(cards.length != 3 && cards.length != 4 && cards.length != 5)
 			throw new Exception("Board must contain 3, 4 or 5 cards");
@@ -112,7 +139,8 @@ public class EquityCalculator {
 	}
 
 
-	public void calculate() {
+	public void calculate() throws Exception {
+		verifyDuplicateCards();
 		mRankings.clear();
 		mEquities.clear();
 
